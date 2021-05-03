@@ -4,6 +4,8 @@ require 'nokogiri'
 
 Mongoid.load!(File.join(File.dirname(__FILE__), 'config', 'mongoid.yml'))
 
+# adding namespace?
+
 # ENDPOINTS
 
 # root
@@ -13,12 +15,12 @@ end
 
 # index
 get '/jobs' do
-  Job.all
+  RequestHandler.list_all
 end
 
 #search API
 get "/jobs/search=#{keyword}" do
-  get_api_response(keyword)
+  search_and_retrieve_data(keyword)
 end
 
 # API requests

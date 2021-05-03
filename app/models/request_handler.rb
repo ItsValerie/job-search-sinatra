@@ -5,6 +5,10 @@ require 'xml/to/json'
 
 class RequestHandler
 
+  def initialize(url)
+    @url = url
+  end
+
   def get_api_response(keyword)
     url = "http://stackoverflow.com/jobs/feed?q=#{keyword}"
     xml = Nokogiri::HTML(open(url))
@@ -20,7 +24,7 @@ class RequestHandler
   end
 
   def self.list_all
-    # list all data
+    # list all data from mongodb as json
   end
 end
 

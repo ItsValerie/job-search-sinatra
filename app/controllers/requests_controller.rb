@@ -5,7 +5,7 @@ class RequestController
     @url = params[:url]
   end
 
-  handler = RequestHandler.new()
+  handler = RequestHandler.new(url)
 
   def search_and_retrieve_data(keyword)
     # passing in a keyword
@@ -13,11 +13,9 @@ class RequestController
     xml = handler.get_api_response(keyword)
     # parsing to json
     json = handler.to_json(xml)
-
-    # returning json result
+     # returning json result
     # saving to DB
-
-
+    handler.save_jobs(save)
   end
 
 
