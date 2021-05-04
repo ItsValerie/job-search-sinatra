@@ -14,5 +14,4 @@ class RequestHandler
       config.strict.noblanks
     end
   end
-
 end

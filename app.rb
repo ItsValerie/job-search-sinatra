@@ -7,6 +7,7 @@ require 'json'
 require_relative 'app/models/request_handler.rb'
 require_relative 'app/models/job_query.rb'
 require_relative 'app/models/job_opening.rb'
+require_relative 'app/controllers/requests_controller.rb'
 
 #DB setup
 Mongoid.load!(File.join(File.dirname(__FILE__), 'config', 'mongoid.yml'))
@@ -17,31 +18,38 @@ Mongoid.load!(File.join(File.dirname(__FILE__), 'config', 'mongoid.yml'))
 
 # root
 get '/' do
-  "Welcome! To make a request to the Stack Overflow's Job API add /yourkeyword to the url of this page"
+  "Welcome!"
 end
 
 # index
 get '/jobs' do
   JobQuery.each do |query|
     parsed_query = JSON.parse(query.results)
-    p parsed_query['rss']['xmlns:a10'] # this is returning something?
-    # p JobOpening.new(title: parsed_query[:item][:title], company: parsed_query[:item][:author], link: parsed_query[:item][:link], skills: parsed_query[:item][:category])
+    until parsed_query['rss']['channel']['item'].nil?
+      position = parsed_query['rss']['channel']['item'].first['title']
+      company = parsed_query['rss']['channel']['item'].first['author']['name']
+      skills = parsed_query['rss']['channel']['item'].first['category']
+      website = parsed_query['rss']['channel']['item'].first['link']
+      summary = parsed_query['rss']['channel']['item'].first['description']
+      p JobOpening.create!(position: position, company: company, skills: skills, website: website, summary: summary).to_json
+    end
   end
-
-  # next: parse data here to get a nice output of all queries
-  #
-  # when you want to see the entire query then check your terminal output when running 'ruby app.rb'
+  # convert to json again?
 end
 
 #handling request to Stackoverflow API
-# invoke controller action here
 get '/jobs/:keyword' do
-  # url = request.url
   keyword = params['keyword']
-  handler = RequestHandler.new(keyword)
-  results_xml = handler.get_api_response(keyword)
-  json_string = Hash.from_xml(results_xml.to_s).to_json
+  json_string = search_and_retrieve_data(keyword)
   job_query = JobQuery.create!(results: json_string)
-  puts "This worked" if job_query.valid?
-  "Result: #{JSON.parse(json_string)}" # for testing purposes only
+  p "Request successful" if job_query.valid? # for testing purposes only
+  "Query results: #{JSON.parse(json_string)}"
 end
+
+private
+
+def search_and_retrieve_data(keyword)
+    handler = RequestHandler.new(keyword)
+    results_xml = handler.get_api_response(keyword)
+    as_json(results_xml)
+  end
