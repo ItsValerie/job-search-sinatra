@@ -1,6 +1,7 @@
 # Job model as database handler
 require 'open-uri'
 require 'nokogiri'
+require_relative 'job.rb'
 # require 'xml/to/json'
 
 class RequestHandler
@@ -14,18 +15,16 @@ class RequestHandler
     xml = Nokogiri::XML(open(url))
   end
 
-  # def to_json(xml)
-  #   JSON.pretty_generate(xml)
+  # def prepare_response
+  #   begin
+  #     JSON.parse(request.body.read)
+  #   rescue
+  #     halt 400, { message: 'Invalid JSON' }.to_json
+  #   end
   # end
 
-  def save_to_db(json)
-    # create new instances
-    # save to MongoDB
-  end
 
-  def self.list_all
-    # list all data from mongodb as json
-  end
+
 end
 
 # test

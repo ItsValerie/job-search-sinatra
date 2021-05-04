@@ -12,10 +12,10 @@ class RequestController
     # calling api with keyword
     xml = handler.get_api_response(keyword)
     # parsing to json
-    json = handler.to_json(xml)
+    json = handler.to_json(xml) #update
      # returning json result
     # saving to DB
-    handler.save_jobs(save)
+    handler.save_to_db(json)
   end
 
 

@@ -1,5 +1,5 @@
 require 'sinatra'
-require 'sinatra/json'
+# require 'sinatra/json'
 require 'mongoid'
 require 'nokogiri'
 require 'active_support/core_ext/hash'
@@ -20,7 +20,7 @@ end
 
 # index
 get '/jobs' do
-  RequestHandler.list_all
+  Jobs.all.to_json
 end
 
 #handling request to Stackoverflow API
@@ -30,14 +30,10 @@ get '/jobs/:keyword' do
   keyword = params['keyword']
   handler = RequestHandler.new(keyword)
   results_xml = handler.get_api_response(keyword)
+  # halt(404, { message: 'No job opening found' }.to_json) unless results_xml
   results_json = Hash.from_xml(results_xml.to_s).to_json
-  "#{results_json}"
-  # p results_json
-  # p results_json
-  # results_json = Crack::XML.parse(ml)
-  # p results_json
-  # "This is the result #{results_json}"
-
+  job = Jobs.create!(title: 'title', company: 'company')
+  "This data has been added to the DB -- #{results_json}" if job
 
 end
 
