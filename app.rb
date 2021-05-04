@@ -23,8 +23,9 @@ end
 # index
 get '/jobs' do
   JobQuery.each do |query|
-    parsed_query = JSON.parse(query.results) # for testing purposes only
-    p parsed_query
+    parsed_query = JSON.parse(query.results)
+    p parsed_query['rss']['xmlns:a10'] # this is returning something?
+    # p JobOpening.new(title: parsed_query[:item][:title], company: parsed_query[:item][:author], link: parsed_query[:item][:link], skills: parsed_query[:item][:category])
   end
 
   # parse data here to get a nice output of all queries
@@ -42,5 +43,5 @@ get '/jobs/:keyword' do
   json_string = Hash.from_xml(results_xml.to_s).to_json
   job_query = JobQuery.create!(results: json_string)
   puts "This worked" if job_query.valid?
-  "Result: #{job_query.class}" # for testing purposes only
+  "Result: #{JSON.parse(json_string)}" # for testing purposes only
 end
