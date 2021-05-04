@@ -6,19 +6,3 @@
         - localhost:27017
       options:
         server_selection_timeout: 1
-
-
-
-
-
-  # clients:
-  #   default:
-  #     uri: mongodb+srv://cobrainer:martin@cobrainer@cluster0.epxcu.mongodb.net/job-search?retryWrites=true&w=majority
-  #     options:
-  #       server_selection_timeout: 5
-
-
-
-# client = Mongo::Client.new(&apos;mongodb://cobrainer:<password>@cluster0-shard-00-00.epxcu.mongodb.net:27017,cluster0-shard-00-01.epxcu.mongodb.net:27017,cluster0-shard-00-02.epxcu.mongodb.net:27017/myFirstDatabase?ssl=true&replicaSet=atlas-qkcjxn-shard-0&authSource=admin&retryWrites=true&w=majority&apos;)
-
-

@@ -28,7 +28,7 @@ get '/jobs' do
     # p JobOpening.new(title: parsed_query[:item][:title], company: parsed_query[:item][:author], link: parsed_query[:item][:link], skills: parsed_query[:item][:category])
   end
 
-  # parse data here to get a nice output of all queries
+  # next: parse data here to get a nice output of all queries
   #
   # when you want to see the entire query then check your terminal output when running 'ruby app.rb'
 end
