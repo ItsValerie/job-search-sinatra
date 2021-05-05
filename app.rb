@@ -34,15 +34,15 @@ get '/jobs' do
     end
   end
   # convert to json again?
+  # print result in browser
 end
 
 #handling request to Stackoverflow API
 get '/jobs/:keyword' do
   keyword = params['keyword']
   json_string = search_and_retrieve_data(keyword)
-  job_query = JobQuery.create!(results: json_string) unless ['totalResults'].zero?
-  job_query.valid? ? p "Request successful" : p "No results for this request"
-  "Query results: #{JSON.parse(json_string)}"
+  job_query = save_job_query(json_string)
+  job_query.valid? ? "Request successful:#{JSON.parse(json_string)}" : "No results for this request"
 end
 
 private
@@ -51,4 +51,9 @@ def search_and_retrieve_data(keyword)
   handler = RequestHandler.new(keyword)
   results_xml = handler.get_api_response(keyword)
   as_json(results_xml)
+end
+
+def save_job_query(json_string)
+  parsed_query = JSON.parse(json_string)
+  JobQuery.create!(results: json_string) unless parsed_query['rss']['totalResults'].zero?
 end
