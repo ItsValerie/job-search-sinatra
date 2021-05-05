@@ -1,13 +1,12 @@
 require 'sinatra'
 require 'mongoid'
 require 'nokogiri'
-require 'active_support/core_ext/hash'
 require 'json'
+require 'active_support/core_ext/hash'
 
 require_relative 'app/models/request_handler.rb'
 require_relative 'app/models/job_query.rb'
 require_relative 'app/models/job_opening.rb'
-require_relative 'app/controllers/requests_controller.rb'
 
 #DB setup
 Mongoid.load!(File.join(File.dirname(__FILE__), 'config', 'mongoid.yml'))
@@ -41,15 +40,15 @@ end
 get '/jobs/:keyword' do
   keyword = params['keyword']
   json_string = search_and_retrieve_data(keyword)
-  job_query = JobQuery.create!(results: json_string)
-  p "Request successful" if job_query.valid? # for testing purposes only
+  job_query = JobQuery.create!(results: json_string) unless ['totalResults'].zero?
+  job_query.valid? ? p "Request successful" : p "No results for this request"
   "Query results: #{JSON.parse(json_string)}"
 end
 
 private
 
 def search_and_retrieve_data(keyword)
-    handler = RequestHandler.new(keyword)
-    results_xml = handler.get_api_response(keyword)
-    as_json(results_xml)
-  end
+  handler = RequestHandler.new(keyword)
+  results_xml = handler.get_api_response(keyword)
+  as_json(results_xml)
+end
