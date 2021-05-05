@@ -6,7 +6,7 @@ class JobQuery
 
   field :results, type: String
 
-  def as_json(xml)
+  def xml_as_json(xml)
     Hash.from_xml(xml.to_s).to_json
   end
 end
