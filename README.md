@@ -5,7 +5,7 @@
  - Nokogiri 1.8
 
 ## Before you get started
-  1. Clone this repository in your terminal using SHH
+  1. Clone this repository in your terminal using SSH
   2. Install MongoDB locally
   3. Install Ruby 2.6.6
   4. Add JSON formatter extension to make your life easier 
