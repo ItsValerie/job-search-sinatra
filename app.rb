@@ -8,28 +8,28 @@ require_relative 'app/models/request_handler'
 require_relative 'app/models/job_query'
 require_relative 'app/models/job_opening'
 
-#DB setup
+#DB Setup
 Mongoid.load!(File.join(File.dirname(__FILE__), 'config', 'mongoid.yml'))
 
 # ENDPOINTS
 
-# root
+# Root
 get '/' do
   "Welcome!"
 end
 
-# index - GET request to DB (returns JSON string of last job query saved)
+# Index - GET request to DB (returns JSON string of last job query saved)
 get '/jobs' do
   last_job_query = JobQuery.last.results
   ERB.new("#{last_job_query}").result
 end
 
-# index - GET request to DB (not working yet)
+# Index - GET request to DB (not working yet)
 # get '/jobs' do
 #   JobQuery.each do |query|
 #     parsed_query = JSON.parse(query.results)
 #     job_openings = parsed_query['rss']['channel']['item']
-#     unless job_openings.nil? do
+#     until job_openings.nil? do
 #       job_openings.each do |job|
 #         position = job['title']
 #         company = job['author']['name']
