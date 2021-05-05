@@ -25,28 +25,19 @@ get '/jobs' do
   JobQuery.each do |query|
     parsed_query = JSON.parse(query.results)
     jobs = parsed_query['rss']['channel']['item']
-    until jobs.nil? do
+    unless jobs.nil? do
       jobs.each do |job|
         position = job['title']
         company = job['author']['name']
         skills = job['category']
         website = job['link']
         summary = job['description']
+        "#{position.to_json}"
         saved_job_opening = build_job_opening(position, company, skills, website, summary)
-        p "Successful" unless saved_job_opening.nil?# testing purposes only
-        # "#{saved_job_opening}"
+        # p "#{saved_job_opening.company.to_json}#{saved_job_opening.position.to_json}" unless saved_job_opening.nil?# testing purposes only
       end
     end
   end
-  #   until parsed_query['rss']['channel']['item'].nil? do
-  #     position = parsed_query['rss']['channel']['item'].first['title']
-  #     company = parsed_query['rss']['channel']['item'].first['author']['name']
-  #     skills = parsed_query['rss']['channel']['item'].first['category']
-  #     website = parsed_query['rss']['channel']['item'].first['link']
-  #     summary = parsed_query['rss']['channel']['item'].first['description']
-  #     "#{build_job_opening(position, company, skills, website, summary)}"
-  #   end
-  # end
   # convert to json again?
   # print result in browser
 end
